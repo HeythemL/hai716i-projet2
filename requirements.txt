@@ -11,5 +11,8 @@ pandas>=2.1.0
 matplotlib>=3.8.0
 seaborn>=0.13.0
 
+# PDF Generation (Journal)
+fpdf2>=2.7.0
+
 # Optional: for comparison/validation only (not required for core)
 # axelrod>=4.8.0
