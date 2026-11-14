@@ -14,7 +14,7 @@ from .gains import C, D
 
 
 # ============================================================
-# STRATÉGIES DE BASE
+# STRATÉGIES DE BASE (5 du cours)
 # ============================================================
 
 def all_d(historique_moi, historique_adv, tour):
@@ -82,6 +82,41 @@ def joss(historique_moi, historique_adv, tour):
 
 
 # ============================================================
+# STRATÉGIES NOUVELLES (Étape 2 - Personne A)
+# ============================================================
+
+def grim(historique_moi, historique_adv, tour):
+    """
+    GRIM TRIGGER (Friedman 1971) :
+    - Coopère tant que l'adversaire n'a jamais défectionné
+    - Au premier D adverse : bascule en ALL-D définitif
+    """
+    if D in historique_adv:
+        return D
+    return C
+
+
+def pavlov(historique_moi, historique_adv, tour):
+    """
+    PAVLOV / Win-Stay Lose-Shift (Kraines & Kraines 1989) :
+    - Tour 0 : coopère (C)
+    - Si gain au tour précédent >= 3 (R ou T) : répète son coup
+    - Si gain au tour précédent < 3 (P ou S) : change de coup
+    """
+    if tour == 0:
+        return C
+    mon_dernier = historique_moi[-1]
+    adv_dernier = historique_adv[-1]
+    # Matrice de gains locale pour calculer mon gain au tour précédent
+    gains = {C: {C: 3, D: 0}, D: {C: 5, D: 2}}
+    gain_prec = gains[mon_dernier][adv_dernier]
+    if gain_prec >= 3:
+        return mon_dernier  # Win-Stay
+    else:
+        return D if mon_dernier == C else C  # Lose-Shift
+
+
+# ============================================================
 # DICTIONNAIRE DES STRATÉGIES
 # ============================================================
 
@@ -91,7 +126,10 @@ STRATEGIES = {
     "TIT-FOR-TAT": tit_for_tat,
     "TESTER": tester,
     "JOSS": joss,
+    "GRIM": grim,
+    "PAVLOV": pavlov,
 }
+STRATEGIES_BASE = STRATEGIES
 
 
 if __name__ == "__main__":
