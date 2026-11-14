@@ -5,6 +5,7 @@ Code simple, sans types compliqués.
 
 import random
 from .gains import gain, C, D
+from .strategies import STRATEGIES
 
 
 def jouer_partie(strat_i, strat_j, nb_tours=200, seed=None):
@@ -107,16 +108,10 @@ def afficher_classement(scores):
 
 
 if __name__ == "__main__":
-    # Test rapide avec stratégies basiques
-    def all_d(hist_moi, hist_adv, tour):
-        return D
-
-    def random_strat(hist_moi, hist_adv, tour):
-        return random.choice([C, D])
-
+    # Test rapide avec les stratégies du module
     strategies_test = {
-        'ALL-D': all_d,
-        'RANDOM': random_strat,
+        'ALL-D': STRATEGIES['ALL-D'],
+        'RANDOM': STRATEGIES['RANDOM'],
     }
 
     print("Test moteur avec 2 stratégies...")
@@ -125,7 +120,7 @@ if __name__ == "__main__":
 
     # Test une partie seule
     print("\nTest une partie seule (5 tours) :")
-    resultat = jouer_partie(all_d, random_strat, nb_tours=5, seed=123)
+    resultat = jouer_partie(STRATEGIES['ALL-D'], STRATEGIES['RANDOM'], nb_tours=5, seed=123)
     print(f"Score ALL-D: {resultat['score_i']}")
     print(f"Score RANDOM: {resultat['score_j']}")
     print(f"Historique: {resultat['historique']}")
