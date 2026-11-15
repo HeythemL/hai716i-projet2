@@ -1,0 +1,40 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\bahso\AppData\Local\Programs\Python\Python312\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\bahso\Desktop\M1 GL\POA\hai716i-projet2
+configfile: pytest.ini
+collecting ... collected 31 items
+
+tests/test_strategies.py::TestAllD::test_premier_tour PASSED             [  3%]
+tests/test_strategies.py::TestAllD::test_toujours_D PASSED               [  6%]
+tests/test_strategies.py::TestRandom::test_retourne_C_ou_D PASSED        [  9%]
+tests/test_strategies.py::TestRandom::test_pas_toujours_pareil PASSED    [ 12%]
+tests/test_strategies.py::TestTitForTat::test_premier_tour_coopere PASSED [ 16%]
+tests/test_strategies.py::TestTitForTat::test_copie_cooperation PASSED   [ 19%]
+tests/test_strategies.py::TestTitForTat::test_copie_defection PASSED     [ 22%]
+tests/test_strategies.py::TestTitForTat::test_sequence_complete PASSED   [ 25%]
+tests/test_strategies.py::TestTitForTat::test_riposter_puis_pardonner PASSED [ 29%]
+tests/test_strategies.py::TestTester::test_premier_tour_trahit PASSED    [ 32%]
+tests/test_strategies.py::TestTester::test_deuxieme_tour_coopere PASSED  [ 35%]
+tests/test_strategies.py::TestTester::test_exploite_si_pas_riposte PASSED [ 38%]
+tests/test_strategies.py::TestTester::test_tft_si_riposte PASSED         [ 41%]
+tests/test_strategies.py::TestJoss::test_premier_tour_coopere PASSED     [ 45%]
+tests/test_strategies.py::TestJoss::test_copie_defection PASSED          [ 48%]
+tests/test_strategies.py::TestJoss::test_parfois_trahit_sur_cooperation PASSED [ 51%]
+tests/test_strategies.py::TestGrim::test_premier_tour_coopere PASSED     [ 54%]
+tests/test_strategies.py::TestGrim::test_coopere_tant_que_pas_de_D PASSED [ 58%]
+tests/test_strategies.py::TestGrim::test_bascule_apres_premier_D PASSED  [ 61%]
+tests/test_strategies.py::TestPavlov::test_premier_tour_coopere PASSED   [ 64%]
+tests/test_strategies.py::TestPavlov::test_win_stay PASSED               [ 67%]
+tests/test_strategies.py::TestPavlov::test_lose_shift PASSED             [ 70%]
+tests/test_strategies.py::TestTFT2T::test_premier_tour_coopere PASSED    [ 74%]
+tests/test_strategies.py::TestTFT2T::test_pardonne_premier_D PASSED      [ 77%]
+tests/test_strategies.py::TestTFT2T::test_ripote_apres_deux_D_consecutifs PASSED [ 80%]
+tests/test_strategies.py::TestTFT2T::test_recoopere_apres_ripote_si_adversaire_coopere PASSED [ 83%]
+tests/test_strategies.py::TestProber::test_premier_tour_trahit PASSED    [ 87%]
+tests/test_strategies.py::TestProber::test_deuxieme_tour_coopere PASSED  [ 90%]
+tests/test_strategies.py::TestProber::test_troisieme_tour_coopere PASSED [ 93%]
+tests/test_strategies.py::TestProber::test_passe_en_tft_si_riposte_tour1 PASSED [ 96%]
+tests/test_strategies.py::TestProber::test_exploite_si_pas_riposte PASSED [100%]
+
+============================= 31 passed in 0.13s ==============================

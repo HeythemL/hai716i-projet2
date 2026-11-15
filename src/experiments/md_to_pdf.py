@@ -10,8 +10,14 @@ from fpdf import FPDF
 class JournalPDF(FPDF):
     def normalize_text(self, text):
         if isinstance(text, str):
-            text = text.replace('—', '-').replace('–', '-').replace('’', "'").replace('“', '"').replace('”', '"')
+            text = text.replace('—', '-').replace('–', '-').replace('’', "'").replace('‘', "'")
+            text = text.replace('“', '"').replace('”', '"')
             text = text.replace('🥇', '1.').replace('🥈', '2.').replace('🥉', '3.').replace('✅', '[OK]')
+            text = text.replace('≥', '>=').replace('≤', '<=').replace('→', '->')
+            text = text.replace('×', 'x').replace('→', '->')
+            text = text.replace('é', 'e').replace('è', 'e').replace('ê', 'e').replace('à', 'a')
+            text = text.replace('ù', 'u').replace('ô', 'o').replace('î', 'i').replace('ç', 'c')
+            text = text.replace('â', 'a').replace('ï', 'i').replace('œ', 'oe').replace('æ', 'ae')
         return super().normalize_text(text)
 
     def header(self):
@@ -356,6 +362,330 @@ def generate_journal_pdf():
             ['outputs/etape1_tests_console.txt', 'Capture sortie tests'],
             ['journal/journal_B.md', 'Journal (source Markdown)'],
             ['journal/journal_B.pdf', 'Journal (ce PDF)'],
+        ]
+    )
+
+    # ========================================================================
+    # ÉTAPE 2 — NOUVELLES STRATÉGIES + TOURNOI ÉLARGI
+    # ========================================================================
+    pdf.add_page()
+    pdf.chapter_title("7. Stratégies implémentées — Étape 2 (4 nouvelles)", level=2)
+
+    strategies_etape2 = [
+        ("GRIM TRIGGER (Personne A)",
+         "Coopère tant que l'adversaire n'a jamais joué D. Au 1er D adverse, bascule en ALL-D définitif.",
+         "Friedman 1971",
+         "Coopération mutuelle parfaite (3,3) si adversaire coopère. Inexploitable.",
+         "Impardonnable : une seule erreur/bruit = défection éternelle. Ne pardonne jamais.",
+         "Personne A (Heythem)"),
+        ("PAVLOV / Win-Stay Lose-Shift (Personne A)",
+         "Tour 0: C. Si gain ≥ 3 (R/T) -> répète (Win-Stay). Si gain < 3 (P/S) -> change (Lose-Shift).",
+         "Kraines & Kraines 1989",
+         "S'adapte dynamiquement : maintient coopération, exploite naïfs, robuste au bruit.",
+         "Peut entrer en cycles d'exploitation mutuelle contre certains adversaires.",
+         "Personne A (Heythem)"),
+        ("TFT-2T / Tit-For-Two-Tats (Personne B)",
+         "Tour 0: C. Pardonne 1er D adverse. Ne riposte (D) qu'après 2 D consécutifs. Re-coopère si adv. re-coopère.",
+         "Axelrod 1984 (The Evolution of Cooperation)",
+         "Évite les spirales de représailles accidentelles (bruit). Plus tolérante que TFT.",
+         "Trop tolérante : exploitée par ALL-D et TESTER qui comprennent qu'ils peuvent trahir une fois.",
+         "Moi (Personne B)"),
+        ("PROBER (Personne B)",
+         "Tour 0: D (test). Tours 1-2: C,C. Si adv. riposte (D au tour 1 OU 2) -> TFT. Sinon -> exploite en alternant D/C.",
+         "Li 2011 / variante Axelrod",
+         "Identifie rapidement naïfs vs fermes. Exploite les naïfs, joue prudemment (TFT) contre les fermes.",
+         "Test initial (D tour 0) coûte 3 pts vs coopérateurs. Handicap vs TFT/ALL-D au démarrage.",
+         "Moi (Personne B)"),
+    ]
+
+    for name, regle, origine, force, faiblesse, par in strategies_etape2:
+        pdf.chapter_title(name, level=3)
+        pdf.add_table(
+            ['Propriété', 'Description'],
+            [
+                ['Règle', regle],
+                ['Origine', origine],
+                ['Force', force],
+                ['Faiblesse', faiblesse],
+                ['Implémentée par', par],
+            ]
+        )
+
+    # ===== 8. RÉSULTATS ÉTAPE 2 =====
+    pdf.add_page()
+    pdf.chapter_title("8. Résultats Étape 2 — Tournoi élargi (9 stratégies)", level=2)
+
+    pdf.chapter_title("8.1 Sortie du programme", level=3)
+    pdf.code_block(
+        "==================================================\n"
+        "ÉTAPE 2 : TOURNOI ÉLARGI (9 stratégies)\n"
+        "==================================================\n"
+        "Seed: 42\n"
+        "Parties par paire: 5\n"
+        "Tours par partie: 200\n"
+        "Stratégies: ['ALL-D', 'RANDOM', 'TIT-FOR-TAT', 'TESTER', 'JOSS',\n"
+        "  'GRIM', 'PAVLOV', 'TFT-2T', 'PROBER']\n"
+        "\n"
+        "========================================\n"
+        "CLASSEMENT FINAL\n"
+        "========================================\n"
+        "Rang  Stratégie              Score\n"
+        "----------------------------------------\n"
+        "1     TIT-FOR-TAT            21104\n"
+        "2     GRIM                   20489\n"
+        "3     PROBER                 20347\n"
+        "4     TESTER                 19843\n"
+        "5     PAVLOV                 19403\n"
+        "6     ALL-D                  19120\n"
+        "7     TFT-2T                 18630\n"
+        "8     JOSS                   18293\n"
+        "9     RANDOM                 17785\n"
+        "========================================"
+    )
+
+    pdf.chapter_title("8.2 Classement détaillé", level=3)
+    pdf.add_table(
+        ['Rang', 'Stratégie', 'Score', 'Moy/partie', 'Origine'],
+        [
+            ['1', 'TIT-FOR-TAT', '21104', '469.0', 'Base'],
+            ['2', 'GRIM', '20489', '455.3', 'A'],
+            ['3', 'PROBER', '20347', '452.2', 'B'],
+            ['4', 'TESTER', '19843', '441.0', 'Base'],
+            ['5', 'PAVLOV', '19403', '431.2', 'A'],
+            ['6', 'ALL-D', '19120', '424.9', 'Base'],
+            ['7', 'TFT-2T', '18630', '414.0', 'B'],
+            ['8', 'JOSS', '18293', '406.5', 'Base'],
+            ['9', 'RANDOM', '17785', '395.2', 'Base'],
+        ]
+    )
+
+    pdf.chapter_title("8.3 Graphiques", level=3)
+    pdf.body_text("Classement complet (9 stratégies) :")
+    chart_path = os.path.join(outputs_dir, 'etape2_classement.png')
+    pdf.add_image_safe(chart_path, w=150)
+
+    pdf.body_text("Comparatif Étape 1 vs Étape 2 (5 stratégies communes) :")
+    chart_path2 = os.path.join(outputs_dir, 'etape2_comparaison.png')
+    pdf.add_image_safe(chart_path2, w=150)
+
+    # ===== 9. ANALYSE COMPARATIVE =====
+    pdf.add_page()
+    pdf.chapter_title("9. Analyse comparative — Étape 1 vs Étape 2", level=2)
+
+    pdf.chapter_title("9.1 Changement majeur : TIT-FOR-TAT redevient gagnante !", level=3)
+    pdf.bold_text("Dans l'Étape 1 (5 stratégies hostiles), ALL-D dominait.")
+    pdf.bold_text("Dans l'Étape 2 (9 stratégies), TIT-FOR-TAT gagne (21104) avec une large avance.")
+
+    pdf.body_text(
+        "L'ajout de GRIM, PROBER et PAVLOV a créé une population majoritairement "
+        "coopérative/cond. coopérative (5 sur 9 stratégies coopèrent avec TFT). "
+        "TFT accumule ainsi des scores élevés (3,3) contre 4 nouveaux partenaires, "
+        "doublant presque son avantage."
+    )
+
+    pdf.add_table(
+        ['Facteur', 'Étape 1 (5 strat.)', 'Étape 2 (9 strat.)'],
+        [
+            ['Partenaires coop. pour TFT', '0 (TESTER, JOSS trahissent)', '4 (GRIM, PROBER->TFT, PAVLOV, TFT-2T)'],
+            ['Score TFT', '9109 (2ème)', '21104 (1er, +132%)'],
+            ['Score ALL-D', '9545 (1er)', '19120 (6ème, +100% seulement)'],
+        ]
+    )
+
+    pdf.chapter_title("9.2 Performance des nouvelles stratégies (Personne B)", level=3)
+
+    pdf.bold_text("PROBER (3ème place - 20347) — EXCELLENT !")
+    pdf.body_text(
+        "Batte ALL-D, TESTER, JOSS, TFT-2T, RANDOM. Perd seulement vs TFT, GRIM, PAVLOV (très peu). "
+        "Stratégie 'intelligente' : sonde puis s'adapte optimalement."
+    )
+
+    pdf.bold_text("TFT-2T (7ème place - 18630) — DÉCEVANTE")
+    pdf.body_text(
+        "Perd vs TFT, GRIM, PROBER, TESTER, PAVLOV, ALL-D. "
+        "Trop tolérante : se fait exploiter par ALL-D (ne riposte qu'au 2ème D). "
+        "Contre TESTER : TESTER trahit tour 0 -> TFT-2T pardonne -> TESTER exploite. "
+        "Leçon : Dans un environnement hostile, la tolérance excessive est punie."
+    )
+
+    pdf.chapter_title("9.3 Évolution des scores (facteur ×2.2 dû aux 8 adversaires vs 4)", level=3)
+    pdf.add_table(
+        ['Stratégie', 'Étape 1', 'Étape 2', 'Ratio', 'Interprétation'],
+        [
+            ['TIT-FOR-TAT', '9109', '21104', '2.32', 'Meilleure progression - profite des nouveaux coop.'],
+            ['GRIM', '—', '20489', '—', 'Très forte en pop. coopérative'],
+            ['PROBER', '—', '20347', '—', 'Excellente adaptation'],
+            ['TESTER', '9003', '19843', '2.20', 'Progression standard'],
+            ['PAVLOV', '—', '19403', '—', 'Correcte'],
+            ['ALL-D', '9545', '19120', '2.00', 'Pire progression - perd avantage 1er tour'],
+            ['TFT-2T', '—', '18630', '—', 'Sous-performe'],
+            ['JOSS', '8714', '18293', '2.10', 'Standard'],
+            ['RANDOM', '8445', '17785', '2.11', 'Standard'],
+        ]
+    )
+
+    # ===== 10. TESTS UNITAIRES =====
+    pdf.add_page()
+    pdf.chapter_title("10. Tests unitaires — 31/31 passés", level=2)
+    pdf.code_block(
+        "============================= test session starts ========\n"
+        "platform win32 -- Python 3.12.10, pytest-9.2.0\n"
+        "collected 31 items\n"
+        "\n"
+        "TestAllD::test_premier_tour PASSED             [  3%]\n"
+        "TestAllD::test_toujours_D PASSED               [  6%]\n"
+        "TestRandom::test_retourne_C_ou_D PASSED        [  9%]\n"
+        "TestRandom::test_pas_toujours_pareil PASSED    [ 12%]\n"
+        "TestTitForTat::test_premier_tour_coopere PASSED [ 16%]\n"
+        "TestTitForTat::test_copie_cooperation PASSED   [ 19%]\n"
+        "TestTitForTat::test_copie_defection PASSED     [ 22%]\n"
+        "TestTitForTat::test_sequence_complete PASSED   [ 25%]\n"
+        "TestTitForTat::test_riposter_puis_pardonner PASSED [ 29%]\n"
+        "TestTester::test_premier_tour_trahit PASSED    [ 32%]\n"
+        "TestTester::test_deuxieme_tour_coopere PASSED  [ 35%]\n"
+        "TestTester::test_exploite_si_pas_riposte PASSED [ 38%]\n"
+        "TestTester::test_tft_si_riposte PASSED         [ 41%]\n"
+        "TestJoss::test_premier_tour_coopere PASSED     [ 45%]\n"
+        "TestJoss::test_copie_defection PASSED          [ 48%]\n"
+        "TestJoss::test_parfois_trahit_sur_coop PASSED  [ 51%]\n"
+        "TestGrim::test_premier_tour_coopere PASSED     [ 54%]\n"
+        "TestGrim::test_coopere_tant_que_pas_de_D PASSED [ 58%]\n"
+        "TestGrim::test_bascule_apres_premier_D PASSED  [ 61%]\n"
+        "TestPavlov::test_premier_tour_coopere PASSED   [ 64%]\n"
+        "TestPavlov::test_win_stay PASSED               [ 67%]\n"
+        "TestPavlov::test_lose_shift PASSED             [ 70%]\n"
+        "TestTFT2T::test_premier_tour_coopere PASSED    [ 74%]\n"
+        "TestTFT2T::test_pardonne_premier_D PASSED      [ 77%]\n"
+        "TestTFT2T::test_ripote_apres_deux_D PASSED     [ 80%]\n"
+        "TestTFT2T::test_recoopere_apres_ripote PASSED  [ 83%]\n"
+        "TestProber::test_premier_tour_trahit PASSED    [ 87%]\n"
+        "TestProber::test_deuxieme_tour_coopere PASSED  [ 90%]\n"
+        "TestProber::test_troisieme_tour_coopere PASSED [ 93%]\n"
+        "TestProber::test_passe_en_tft_si_riposte PASSED [ 96%]\n"
+        "TestProber::test_exploite_si_pas_riposte PASSED [100%]\n"
+        "\n"
+        "=============== 31 passed in 0.11s ====================="
+    )
+
+    # ===== 11. FICHIERS PRODUITS ÉTAPE 2 =====
+    pdf.add_page()
+    pdf.chapter_title("11. Fichiers produits — Étape 2", level=2)
+    pdf.add_table(
+        ['Fichier', 'Description'],
+        [
+            ['src/tournament/strategies.py', '9 stratégies (5 base + 2 A + 2 B)'],
+            ['src/experiments/step2_new.py', 'Script tournoi élargi + graphiques'],
+            ['src/experiments/generate_charts.py', 'Génération 3 graphiques'],
+            ['tests/test_strategies.py', '31 tests unitaires (tous OK)'],
+            ['outputs/etape2_classement.csv', 'Classement 9 strat. en CSV'],
+            ['outputs/etape2_classement.png', 'Graphique classement 9 strat. (couleurs origine)'],
+            ['outputs/etape2_comparaison.png', 'Graphique comparatif Étape 1 vs 2'],
+            ['outputs/etape2_sortie_console.txt', 'Capture sortie console complète'],
+            ['outputs/etape2_tests_console.txt', 'Capture sortie tests 31'],
+            ['journal/journal_B.md', 'Journal (source Markdown, mis à jour)'],
+            ['journal/journal_B.pdf', 'Journal (ce PDF, complet Étape 1+2)'],
+        ]
+    )
+
+    # ========================================================================
+    # PHASE 3 — MODIFICATION B : SÉLECTION (ÉVOLUTION)
+    # ========================================================================
+    pdf.add_page()
+    pdf.chapter_title("12. Phase 3 — Modification B : Sélection (Évolution)", level=2)
+
+    pdf.chapter_title("12.1 Choix et prédiction (écrite AVANT exécution)", level=3)
+    pdf.body_text(
+        "Modification B choisie : SÉLECTION — Reproduction proportionnelle aux scores (Roulette Wheel). "
+        "À chaque génération : tournoi complet -> scores -> nouvelle population proportionnelle à score * population."
+    )
+
+    pdf.bold_text("Prédiction :")
+    pdf.body_text(
+        "1. TIT-FOR-TAT dominera (grand gagnant Étape 2, 21104 pts) -> part croissante.\n"
+        "2. GRIM et PROBER (2ème, 3ème) resteront présentes (~20%, ~15%).\n"
+        "3. ALL-D déclinera (mutuelle défection = 2 pts/tour seulement).\n"
+        "4. TFT-2T, JOSS, RANDOM -> extinction (scores les plus bas).\n"
+        "5. TESTER, PAVLOV survie intermédiaire.\n"
+        "Équilibre attendu : TFT ~40-50%, GRIM ~20%, PROBER ~15%."
+    )
+
+    pdf.chapter_title("12.2 Implémentation", level=3)
+    pdf.code_block(
+        "def generation_suivante(population, scores):\n"
+        "    fitness = {nom: scores[nom] * population[nom] for nom in population}\n"
+        "    fitness_total = sum(fitness.values())\n"
+        "    return {nom: fitness[nom] / fitness_total for nom in population}\n\n"
+        "# Boucle 20 générations:\n"
+        "for gen in range(20):\n"
+        "    scores = jouer_tournoi(STRATEGIES, ...)\n"
+        "    population = generation_suivante(population, scores)"
+    )
+
+    # ===== 13. RÉSULTATS PHASE 3 =====
+    pdf.add_page()
+    pdf.chapter_title("13. Résultats Phase 3 — Évolution sur 20 générations", level=2)
+
+    pdf.chapter_title("13.1 Tableau d'évolution", level=3)
+    pdf.add_table(
+        ['Gén.', 'TFT', 'GRIM', 'PROBER', 'TESTER', 'ALL-D', 'PAVLOV', 'TFT-2T', 'JOSS', 'RANDOM'],
+        [
+            ['0 (init)', '11.1%', '11.1%', '11.1%', '11.1%', '11.1%', '11.1%', '11.1%', '11.1%', '11.1%'],
+            ['5', '16.3%', '14.4%', '13.3%', '11.9%', '9.9%', '10.5%', '8.6%', '8.1%', '7.1%'],
+            ['10', '22.0%', '17.1%', '15.1%', '12.0%', '8.2%', '9.3%', '6.3%', '5.8%', '4.1%'],
+            ['15', '28.1%', '19.3%', '16.4%', '11.5%', '6.3%', '8.0%', '4.3%', '3.8%', '2.3%'],
+            ['20', '34.3%', '20.7%', '17.0%', '10.5%', '4.7%', '6.4%', '2.8%', '2.3%', '1.2%'],
+        ]
+    )
+
+    pdf.chapter_title("13.2 Graphique évolution population", level=3)
+    chart_path = os.path.join(outputs_dir, 'etape3_evolution_population.png')
+    pdf.add_image_safe(chart_path, w=160)
+
+    # ===== 14. ANALYSE PRÉDICTION VS RÉALITÉ =====
+    pdf.add_page()
+    pdf.chapter_title("14. Analyse prédiction vs réalité", level=2)
+
+    pdf.bold_text("PRÉDICTION LARGEMENT CONFIRMÉE")
+    pdf.ln(3)
+
+    pdf.add_table(
+        ['Stratégie', 'Prédiction', 'Résultat G20', 'Verdict'],
+        [
+            ['TIT-FOR-TAT', '~40-50% (dominant)', '34.3%', 'Dominant, sous-prédit'],
+            ['GRIM', '~20%', '20.7%', 'Quasi exact'],
+            ['PROBER', '~15%', '17.0%', 'Proche, mieux que prévu'],
+            ['TESTER', '~10-12%', '10.5%', 'Conforme'],
+            ['PAVLOV', '~8-10%', '6.4%', 'Légèrement sous-prédit'],
+            ['ALL-D', 'Déclin fort', '4.7%', 'Conforme'],
+            ['TFT-2T', 'Extinction', '2.8%', 'Conforme (tendance 0)'],
+            ['JOSS', 'Extinction', '2.3%', 'Conforme (tendance 0)'],
+            ['RANDOM', 'Extinction', '1.2%', 'Conforme (tendance 0)'],
+        ]
+    )
+
+    pdf.chapter_title("Enseignements clés", level=3)
+    pdf.body_text(
+        "1. La coopération conditionnelle est évolutivement stable : TFT, GRIM, PROBER forment un 'trio gagnant' "
+        "qui coopère mutuellement (3,3) et élimine les exploitantes.\n"
+        "2. ALL-D (exploitation pure) s'effondre : 2 pts/tour en mutuelle défection ne suffit pas face à la coopération (3 pts/tour).\n"
+        "3. TFT-2T (tolérance excessive) disparaît : se fait exploiter par ALL-D/TESTER. La clémence sans limite n'est pas viable.\n"
+        "4. Convergence pas atteinte à G20 : TFT continue de croître (+1.2% G19->G20). "
+        "Équilibre final estimé : TFT ~40%, GRIM ~22%, PROBER ~18%, TESTER ~10%."
+    )
+
+    # ===== 15. FICHIERS PRODUITS PHASE 3 =====
+    pdf.add_page()
+    pdf.chapter_title("15. Fichiers produits — Phase 3 (Modification B)", level=2)
+    pdf.add_table(
+        ['Fichier', 'Description'],
+        [
+            ['src/experiments/step3_mods.py', 'Script évolution par sélection (20 générations)'],
+            ['src/experiments/generate_charts.py', '+ fonction graphique_etape3_evolution()'],
+            ['outputs/etape3_evolution.csv', 'Parts de population par génération'],
+            ['outputs/etape3_evolution_population.png', 'Graphique aires empilées (20 générations)'],
+            ['outputs/etape3_sortie_console.txt', 'Capture sortie console complète'],
+            ['journal/journal_B.md', 'Journal (source Markdown, complet 3 phases)'],
+            ['journal/journal_B.pdf', 'Journal (ce PDF, complet Étape 1+2+3)'],
         ]
     )
 

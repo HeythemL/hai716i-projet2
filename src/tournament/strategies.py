@@ -117,6 +117,54 @@ def pavlov(historique_moi, historique_adv, tour):
 
 
 # ============================================================
+# STRATÉGIES NOUVELLES (Étape 2 - Personne B)
+# ============================================================
+
+def tft_2t(historique_moi, historique_adv, tour):
+    """
+    TIT-FOR-TWO-TATS (Axelrod 1984) :
+    - Tour 0 : coopère (C)
+    - Pardonne la première défection de l'adversaire
+    - Ne riposte (joue D) que si l'adversaire a défectionné DEUX FOIS DE SUITE
+    - Sinon continue de coopérer
+    """
+    if tour == 0:
+        return C
+    # Vérifie si l'adversaire a joué D aux deux derniers tours
+    if len(historique_adv) >= 2 and historique_adv[-1] == D and historique_adv[-2] == D:
+        return D
+    return C
+
+
+def prober(historique_moi, historique_adv, tour):
+    """
+    PROBER (Li 2011 / variante Axelrod) :
+    - Tour 0 : trahit (D) pour tester
+    - Tour 1 : coopère (C)
+    - Tour 2 : coopère (C)
+    - Si l'adversaire a riposté (joué D au tour 1 OU au tour 2) → passe en TFT
+    - Sinon → exploite en alternant D/C
+    """
+    if tour == 0:
+        return D
+    if tour == 1:
+        return C
+    if tour == 2:
+        return C
+    # À partir du tour 3 : décide selon la réaction aux tests
+    adversaire_a_riposte = (historique_adv[1] == D or historique_adv[2] == D)
+    if adversaire_a_riposte:
+        # L'adversaire a riposté → on joue TIT-FOR-TAT
+        return historique_adv[-1]
+    else:
+        # L'adversaire n'a pas riposté → on l'exploite (alterne D/C)
+        if tour % 2 == 1:  # tours impairs (3, 5, 7...) = D
+            return D
+        else:  # tours pairs (4, 6, 8...) = C
+            return C
+
+
+# ============================================================
 # DICTIONNAIRE DES STRATÉGIES
 # ============================================================
 
@@ -128,8 +176,18 @@ STRATEGIES = {
     "JOSS": joss,
     "GRIM": grim,
     "PAVLOV": pavlov,
+    "TFT-2T": tft_2t,
+    "PROBER": prober,
 }
-STRATEGIES_BASE = STRATEGIES
+
+# STRATEGIES_BASE : seulement les 5 stratégies du cours (Étape 1)
+STRATEGIES_BASE = {
+    "ALL-D": all_d,
+    "RANDOM": random_strat,
+    "TIT-FOR-TAT": tit_for_tat,
+    "TESTER": tester,
+    "JOSS": joss,
+}
 
 
 if __name__ == "__main__":

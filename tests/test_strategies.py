@@ -8,7 +8,9 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from src.tournament.gains import C, D
-from src.tournament.strategies import all_d, random_strat, tit_for_tat, tester as strat_tester, joss
+from src.tournament.strategies import (all_d, random_strat, tit_for_tat,
+                                       tester as strat_tester, joss,
+                                       grim, pavlov, tft_2t, prober)
 
 
 # ============================================================
@@ -141,4 +143,122 @@ class TestJoss:
         nb_trahisons = resultats.count(D)
         # Environ 10% de trahisons (tolérance large pour le test)
         assert 50 < nb_trahisons < 200, f"Attendu ~100 trahisons, obtenu {nb_trahisons}"
+
+
+# ============================================================
+# GRIM (Personne A)
+# ============================================================
+
+class TestGrim:
+    def test_premier_tour_coopere(self):
+        """GRIM doit coopérer au premier tour."""
+        assert grim([], [], 0) == C
+
+    def test_coopere_tant_que_pas_de_D(self):
+        """GRIM coopère tant que l'adversaire n'a jamais joué D."""
+        assert grim([C], [C], 1) == C
+        assert grim([C, C], [C, C], 2) == C
+        assert grim([C, C, C], [C, C, C], 3) == C
+
+    def test_bascule_apres_premier_D(self):
+        """GRIM bascule en ALL-D dès le premier D adverse."""
+        assert grim([C, C], [C, D], 2) == D
+        assert grim([C, C, D], [C, D, C], 3) == D
+        assert grim([C, C, D, D], [C, D, C, C], 4) == D
+
+
+# ============================================================
+# PAVLOV (Personne A)
+# ============================================================
+
+class TestPavlov:
+    def test_premier_tour_coopere(self):
+        """PAVLOV doit coopérer au premier tour."""
+        assert pavlov([], [], 0) == C
+
+    def test_win_stay(self):
+        """PAVLOV répète son coup si gain >= 3 (R=3 ou T=5)."""
+        # (C,C) -> gain 3 -> Win-Stay -> rejoue C
+        assert pavlov([C], [C], 1) == C
+        # (D,C) -> gain 5 -> Win-Stay -> rejoue D
+        assert pavlov([D], [C], 1) == D
+
+    def test_lose_shift(self):
+        """PAVLOV change de coup si gain < 3 (P=2 ou S=0)."""
+        # (C,D) -> gain 0 -> Lose-Shift -> change vers D
+        assert pavlov([C], [D], 1) == D
+        # (D,D) -> gain 2 -> Lose-Shift -> change vers C
+        assert pavlov([D], [D], 1) == C
+
+
+# ============================================================
+# TFT-2T (Personne B)
+# ============================================================
+
+class TestTFT2T:
+    def test_premier_tour_coopere(self):
+        """TFT-2T doit coopérer au premier tour."""
+        assert tft_2t([], [], 0) == C
+
+    def test_pardonne_premier_D(self):
+        """TFT-2T pardonne la première défection adverse."""
+        # Adversaire joue D une seule fois -> TFT-2T continue de coopérer
+        assert tft_2t([C], [D], 1) == C
+
+    def test_ripote_apres_deux_D_consecutifs(self):
+        """TFT-2T riposte seulement après DEUX défections consécutives."""
+        # Un seul D -> pardon
+        assert tft_2t([C], [D], 1) == C
+        # Deux D consécutifs -> riposte
+        assert tft_2t([C, C], [D, D], 2) == D
+
+    def test_recoopere_apres_ripote_si_adversaire_coopere(self):
+        """TFT-2T re-coopère si l'adversaire re-coopère après la riposte."""
+        # Adversaire : D, D, C -> TFT-2T : C, D, C
+        assert tft_2t([], [], 0) == C
+        assert tft_2t([C], [D], 1) == C  # pardonne 1er D
+        assert tft_2t([C, C], [D, D], 2) == D  # riposte au 2ème D
+        assert tft_2t([C, C, D], [D, D, C], 3) == C  # re-coopère
+
+
+# ============================================================
+# PROBER (Personne B)
+# ============================================================
+
+class TestProber:
+    def test_premier_tour_trahit(self):
+        """PROBER doit trahir au premier tour (test)."""
+        assert prober([], [], 0) == D
+
+    def test_deuxieme_tour_coopere(self):
+        """PROBER coopère au tour 1."""
+        assert prober([D], [C], 1) == C
+
+    def test_troisieme_tour_coopere(self):
+        """PROBER coopère au tour 2."""
+        assert prober([D, C], [C, C], 2) == C
+
+    def test_passe_en_tft_si_riposte_tour1(self):
+        """Si adversaire riposte au tour 1 (joue D), PROBER passe en TFT."""
+        # Adversaire : C (tour 0), D (tour 1 = riposte)
+        hist_moi = [D, C]
+        hist_adv = [C, D]
+        # Tour 3 : TFT -> copie hist_adv[-1] = D
+        assert prober(hist_moi, hist_adv, 3) == D
+        # Tour 4 : TFT -> copie hist_adv[-1] = C (si adv joue C)
+        hist_moi2 = [D, C, D]
+        hist_adv2 = [C, D, C]
+        assert prober(hist_moi2, hist_adv2, 4) == C
+
+    def test_exploite_si_pas_riposte(self):
+        """Si adversaire ne riposte pas aux tours 1 et 2, PROBER exploite en alternant D/C."""
+        # Adversaire : C, C, C -> pas de riposte
+        hist_moi = [D, C, C]
+        hist_adv = [C, C, C]
+        # Tour 3 (impair) : D
+        assert prober(hist_moi, hist_adv, 3) == D
+        # Tour 4 (pair) : C
+        hist_moi2 = [D, C, C, D]
+        hist_adv2 = [C, C, C, C]
+        assert prober(hist_moi2, hist_adv2, 4) == C
 

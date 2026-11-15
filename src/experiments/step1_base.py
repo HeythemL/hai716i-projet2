@@ -62,9 +62,9 @@ def main():
     print(f"Gagnant : {gagnant}")
 
     if gagnant == "TIT-FOR-TAT":
-        print("→ TIT-FOR-TAT gagne, comme dans le tournoi d'Axelrod 1980.")
+        print("=> TIT-FOR-TAT gagne, comme dans le tournoi d'Axelrod 1980.")
     else:
-        print(f"→ TIT-FOR-TAT ne gagne PAS (c'est {gagnant} qui gagne).")
+        print(f"=> TIT-FOR-TAT ne gagne PAS (c'est {gagnant} qui gagne).")
         print("  Explication possible : avec seulement 5 stratégies dont")
         print("  ALL-D et TESTER (exploiteuses), TFT ne bénéficie pas de")
         print("  l'effet coopératif du grand tournoi d'Axelrod (14 stratégies).")
