@@ -96,3 +96,89 @@ Dans notre environnement restreint à 5 stratégies :
 - `outputs/etape1_tests_console.txt`
 - `journal/journal_B.md` & `journal/journal_B.pdf`
 
+---
+
+## 6. Stratégies supplémentaires — Étape 2 (4 nouvelles)
+
+| Stratégie | Règle résumée | Origine | Force théorique | Faiblesse théorique | Auteur |
+|-----------|---------------|---------|-----------------|---------------------|--------|
+| **GRIM** | Coopère jusqu'au 1er D adverse, puis ALL-D définitif | Friedman 1971 | Inexploitable, coopération mutuelle parfaite si adversaire coopère | Impardonnable : une erreur = défection éternelle | Heythem |
+| **PAVLOV** | Win-Stay Lose-Shift : répète si gain ≥ 3, change sinon | Kraines & Kraines 1989 | S'adapte, robuste au bruit, maintient coopération | Peut osciller face à certains adversaires | Heythem |
+| **TFT-2T** | Pardonne 1 D, riposte seulement après 2 D consécutifs | Axelrod 1984 | Tolérante au bruit, évite spirales représailles | Trop tolérante : se fait exploiter par ALL-D/TESTER | Sara |
+| **PROBER** | Test initial (D), puis TFT si adversaire ferme, sinon exploite | Li 2011 / Axelrod | Identifie et s'adapte au type adverse | Test initial coûte 3 pts vs coopérateurs | Sara |
+
+---
+
+## 7. Étape 2 : Tournoi élargi (9 stratégies)
+
+### 7.1 Classement obtenu
+
+Exécution avec `python -m src.experiments.step2_new` (Seed 42) :
+
+| Rang | Stratégie | Score total | Moyenne / partie | Origine |
+|:----:|-----------|:-----------:|:----------------:|:-------:|
+| 🥇 1 | **TIT-FOR-TAT** | **21104** | 469.0 | Base |
+| 🥈 2 | GRIM | 20489 | 455.3 | Heythem |
+| 🥉 3 | PROBER | 20347 | 452.2 | **Sara** |
+| 4 | TESTER | 19843 | 441.0 | Base |
+| 5 | PAVLOV | 19403 | 431.2 | Heythem |
+| 6 | ALL-D | 19120 | 424.9 | Base |
+| 7 | TFT-2T | 18630 | 414.0 | **Sara** |
+| 8 | JOSS | 18293 | 406.5 | Base |
+| 9 | RANDOM | 17785 | 395.2 | Base |
+
+### 7.2 Visualisations
+
+**Classement complet (9 stratégies) :**
+![Classement Étape 2](../outputs/etape2_classement.png)
+
+**Comparatif Étape 1 vs Étape 2 (5 stratégies communes) :**
+![Comparatif Étape 1 vs Étape 2](../outputs/etape2_comparaison.png)
+
+### 7.3 Analyse comparative
+
+**Résultat clé : TIT-FOR-TAT redevient gagnante !** 🥇
+
+Dans l'Étape 1 (5 stratégies hostiles), ALL-D dominait. Dans l'Étape 2, l'ajout de **GRIM**, **PROBER** et **PAVLOV** a créé une **population majoritairement coopérative/cond. coopérative** (5 sur 9 stratégies coopèrent avec TFT). TFT accumule ainsi des scores élevés (3, 3) contre 4 nouveaux partenaires, doublant presque son avantage.
+
+| Facteur | Étape 1 (5 strat.) | Étape 2 (9 strat.) |
+|---------|-------------------|-------------------|
+| Partenaires coopératifs pour TFT | 0 (TESTER, JOSS trahissent) | 4 (GRIM, PROBER→TFT, PAVLOV, TFT-2T) |
+| Score TFT vs ALL-D | 9109 (2ème) | 21104 (1er, +132%) |
+| Score ALL-D | 9545 (1er) | 19120 (6ème, +100% seulement) |
+
+**Performance des nouvelles stratégies (Sara) :**
+- **PROBER (3ème - 20347) : Excellent !** Sonde puis s'adapte optimalement. Bat ALL-D, TESTER, JOSS, TFT-2T.
+- **TFT-2T (7ème - 18630) : Décevante.** Trop tolérante, exploitée par ALL-D et TESTER. Dans un environnement hostile, la clémence excessive se paie cher.
+
+**Évolution des scores (facteur ×2.2 dû aux 8 adversaires vs 4) :**
+
+| Stratégie | Étape 1 | Étape 2 | Ratio | Interprétation |
+|-----------|---------|---------|-------|----------------|
+| TIT-FOR-TAT | 9109 | 21104 | **2.32** | **Meilleure progression** — profite maximaux des nouveaux coopérateurs |
+| GRIM | — | 20489 | — | Très forte en pop. coopérative |
+| PROBER | — | 20347 | — | Excellente adaptation |
+| TESTER | 9003 | 19843 | 2.20 | Progression standard |
+| PAVLOV | — | 19403 | — | Correcte |
+| ALL-D | 9545 | 19120 | **2.00** | **Pire progression** — perd avantage 1er tour vs plus d'adv. |
+| TFT-2T | — | 18630 | — | Sous-performe |
+| JOSS | 8714 | 18293 | 2.10 | Standard |
+| RANDOM | 8445 | 17785 | 2.11 | Standard |
+
+---
+
+## 8. Fichiers du projet à la fin de l'Étape 2
+
+- `src/tournament/engine.py` (Moteur de jeu et tournoi)
+- `src/tournament/gains.py` (Matrice de gains)
+- `src/tournament/strategies.py` (**9 stratégies** : 5 base + 2 A + 2 B)
+- `src/experiments/step1_base.py` (Script Étape 1)
+- `src/experiments/step2_new.py` (Script Étape 2 + graphiques)
+- `src/experiments/generate_charts.py` (Génération graphiques)
+- `tests/test_strategies.py` (**31 tests unitaires** : 16 base + 5 GRIM/PAVLOV + 4 TFT-2T + 6 PROBER)
+- `outputs/etape1_classement.csv` / `.png`
+- `outputs/etape2_classement.csv` / `.png`
+- `outputs/etape2_comparaison.png`
+- `outputs/etape2_sortie_console.txt`
+- `journal/journal_B.md` & `journal/journal_B.pdf`
+

@@ -1,13 +1,15 @@
 """
-Étape 2 : Tournoi élargi — 7 stratégies (5 de base + 2 nouvelles).
+Étape 2 : Tournoi élargi — 9 stratégies (5 de base + 2 A + 2 B).
 
-Lance le tournoi avec les 2 stratégies supplémentaires (GRIM, PAVLOV)
+Lance le tournoi avec les 4 stratégies supplémentaires (GRIM, PAVLOV de A + TFT-2T, PROBER de B)
 et compare les résultats avec l'Étape 1.
 """
 
 import os
 import sys
 import csv
+import io
+import contextlib
 
 # Ajouter le répertoire racine au path pour les imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -28,6 +30,25 @@ def sauvegarder_csv(scores, fichier):
     print(f"\nClassement sauvegardé dans : {fichier}")
 
 
+def charger_scores_etape1(fichier):
+    """Charge les scores de l'Étape 1 depuis le CSV."""
+    scores = {}
+    if os.path.exists(fichier):
+        with open(fichier, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                scores[row['Strategie']] = int(row['Score'])
+    return scores
+
+
+def sauvegarder_sortie_console(contenu, fichier):
+    """Sauvegarde la sortie console dans un fichier texte."""
+    os.makedirs(os.path.dirname(fichier), exist_ok=True)
+    with open(fichier, 'w', encoding='utf-8') as f:
+        f.write(contenu)
+    print(f"Sortie console sauvegardée : {fichier}")
+
+
 def main():
     # ========================================
     # SEED FIXE pour reproductibilité
@@ -36,29 +57,56 @@ def main():
     NB_PARTIES = 5
     NB_TOURS = 200
 
-    print("=" * 50)
-    print("ÉTAPE 2 : TOURNOI ÉLARGI (7 stratégies)")
-    print("=" * 50)
-    print(f"Seed: {SEED}")
-    print(f"Parties par paire: {NB_PARTIES}")
-    print(f"Tours par partie: {NB_TOURS}")
-    print(f"Stratégies: {list(STRATEGIES.keys())}")
-    print()
+    # Capture de la sortie console
+    sortie_buffer = io.StringIO()
 
-    # Lancer le tournoi
-    scores = jouer_tournoi(STRATEGIES, nb_parties=NB_PARTIES, nb_tours=NB_TOURS, seed=SEED)
+    with contextlib.redirect_stdout(sortie_buffer):
+        print("=" * 50)
+        print("ÉTAPE 2 : TOURNOI ÉLARGI (9 stratégies)")
+        print("=" * 50)
+        print(f"Seed: {SEED}")
+        print(f"Parties par paire: {NB_PARTIES}")
+        print(f"Tours par partie: {NB_TOURS}")
+        print(f"Stratégies: {list(STRATEGIES.keys())}")
+        print()
 
-    # Afficher le classement
-    afficher_classement(scores)
+        # Lancer le tournoi
+        scores = jouer_tournoi(STRATEGIES, nb_parties=NB_PARTIES, nb_tours=NB_TOURS, seed=SEED)
 
-    # Sauvegarder en CSV
-    sauvegarder_csv(scores, os.path.join('outputs', 'etape2_classement.csv'))
+        # Afficher le classement
+        afficher_classement(scores)
 
-    # Comparer avec l'Étape 1
-    print("\n--- Comparaison Étape 1 vs Étape 2 ---")
-    tries = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-    for rang, (nom, score) in enumerate(tries, 1):
-        print(f"  {rang}. {nom}: {score}")
+        # Sauvegarder en CSV
+        sauvegarder_csv(scores, os.path.join('outputs', 'etape2_classement.csv'))
+
+        # Charger les résultats de l'Étape 1
+        scores_etape1 = charger_scores_etape1(os.path.join('outputs', 'etape1_classement.csv'))
+
+        # Comparer avec l'Étape 1
+        print("\n--- Comparaison Étape 1 vs Étape 2 ---")
+        print("(5 stratégies communes)")
+        tries = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+        for rang, (nom, score) in enumerate(tries, 1):
+            if nom in scores_etape1:
+                diff = score - scores_etape1[nom]
+                signe = "+" if diff > 0 else ""
+                print(f"  {rang}. {nom}: {score} (Étape 1: {scores_etape1[nom]}, {signe}{diff})")
+            else:
+                print(f"  {rang}. {nom}: {score} (nouvelle)")
+
+    # Sauvegarder la sortie console
+    sortie_console = sortie_buffer.getvalue()
+    print(sortie_console)
+    sauvegarder_sortie_console(sortie_console, os.path.join('outputs', 'etape2_sortie_console.txt'))
+
+    # Générer les graphiques
+    print("\n--- Génération des graphiques ---")
+    try:
+        from src.experiments.generate_charts import graphique_etape2_comparaison, graphique_etape2_classement
+        graphique_etape2_comparaison(scores_etape1, scores)
+        graphique_etape2_classement(scores)
+    except Exception as e:
+        print(f"Erreur génération graphiques: {e}")
 
     return scores
 

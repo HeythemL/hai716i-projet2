@@ -1,0 +1,38 @@
+==================================================
+ÉTAPE 2 : TOURNOI ÉLARGI (9 stratégies)
+==================================================
+Seed: 42
+Parties par paire: 5
+Tours par partie: 200
+Stratégies: ['ALL-D', 'RANDOM', 'TIT-FOR-TAT', 'TESTER', 'JOSS', 'GRIM', 'PAVLOV', 'TFT-2T', 'PROBER']
+
+
+========================================
+CLASSEMENT FINAL
+========================================
+Rang  Stratégie                 Score
+----------------------------------------
+1     TIT-FOR-TAT               21104
+2     GRIM                      20489
+3     PROBER                    20347
+4     TESTER                    19843
+5     PAVLOV                    19403
+6     ALL-D                     19120
+7     TFT-2T                    18630
+8     JOSS                      18293
+9     RANDOM                    17785
+========================================
+
+Classement sauvegardé dans : outputs\etape2_classement.csv
+
+--- Comparaison Étape 1 vs Étape 2 ---
+(5 stratégies communes)
+  1. TIT-FOR-TAT: 21104 (Étape 1: 9109, +11995)
+  2. GRIM: 20489 (nouvelle)
+  3. PROBER: 20347 (nouvelle)
+  4. TESTER: 19843 (Étape 1: 9003, +10840)
+  5. PAVLOV: 19403 (nouvelle)
+  6. ALL-D: 19120 (Étape 1: 9545, +9575)
+  7. TFT-2T: 18630 (nouvelle)
+  8. JOSS: 18293 (Étape 1: 8714, +9579)
+  9. RANDOM: 17785 (Étape 1: 8445, +9340)
