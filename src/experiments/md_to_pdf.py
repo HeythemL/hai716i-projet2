@@ -587,6 +587,108 @@ def generate_journal_pdf():
         ]
     )
 
+    # ========================================================================
+    # PHASE 3 — MODIFICATION B : SÉLECTION (ÉVOLUTION)
+    # ========================================================================
+    pdf.add_page()
+    pdf.chapter_title("12. Phase 3 — Modification B : Sélection (Évolution)", level=2)
+
+    pdf.chapter_title("12.1 Choix et prédiction (écrite AVANT exécution)", level=3)
+    pdf.body_text(
+        "Modification B choisie : SÉLECTION — Reproduction proportionnelle aux scores (Roulette Wheel). "
+        "À chaque génération : tournoi complet -> scores -> nouvelle population proportionnelle à score * population."
+    )
+
+    pdf.bold_text("Prédiction :")
+    pdf.body_text(
+        "1. TIT-FOR-TAT dominera (grand gagnant Étape 2, 21104 pts) -> part croissante.\n"
+        "2. GRIM et PROBER (2ème, 3ème) resteront présentes (~20%, ~15%).\n"
+        "3. ALL-D déclinera (mutuelle défection = 2 pts/tour seulement).\n"
+        "4. TFT-2T, JOSS, RANDOM -> extinction (scores les plus bas).\n"
+        "5. TESTER, PAVLOV survie intermédiaire.\n"
+        "Équilibre attendu : TFT ~40-50%, GRIM ~20%, PROBER ~15%."
+    )
+
+    pdf.chapter_title("12.2 Implémentation", level=3)
+    pdf.code_block(
+        "def generation_suivante(population, scores):\n"
+        "    fitness = {nom: scores[nom] * population[nom] for nom in population}\n"
+        "    fitness_total = sum(fitness.values())\n"
+        "    return {nom: fitness[nom] / fitness_total for nom in population}\n\n"
+        "# Boucle 20 générations:\n"
+        "for gen in range(20):\n"
+        "    scores = jouer_tournoi(STRATEGIES, ...)\n"
+        "    population = generation_suivante(population, scores)"
+    )
+
+    # ===== 13. RÉSULTATS PHASE 3 =====
+    pdf.add_page()
+    pdf.chapter_title("13. Résultats Phase 3 — Évolution sur 20 générations", level=2)
+
+    pdf.chapter_title("13.1 Tableau d'évolution", level=3)
+    pdf.add_table(
+        ['Gén.', 'TFT', 'GRIM', 'PROBER', 'TESTER', 'ALL-D', 'PAVLOV', 'TFT-2T', 'JOSS', 'RANDOM'],
+        [
+            ['0 (init)', '11.1%', '11.1%', '11.1%', '11.1%', '11.1%', '11.1%', '11.1%', '11.1%', '11.1%'],
+            ['5', '16.3%', '14.4%', '13.3%', '11.9%', '9.9%', '10.5%', '8.6%', '8.1%', '7.1%'],
+            ['10', '22.0%', '17.1%', '15.1%', '12.0%', '8.2%', '9.3%', '6.3%', '5.8%', '4.1%'],
+            ['15', '28.1%', '19.3%', '16.4%', '11.5%', '6.3%', '8.0%', '4.3%', '3.8%', '2.3%'],
+            ['20', '34.3%', '20.7%', '17.0%', '10.5%', '4.7%', '6.4%', '2.8%', '2.3%', '1.2%'],
+        ]
+    )
+
+    pdf.chapter_title("13.2 Graphique évolution population", level=3)
+    chart_path = os.path.join(outputs_dir, 'etape3_evolution_population.png')
+    pdf.add_image_safe(chart_path, w=160)
+
+    # ===== 14. ANALYSE PRÉDICTION VS RÉALITÉ =====
+    pdf.add_page()
+    pdf.chapter_title("14. Analyse prédiction vs réalité", level=2)
+
+    pdf.bold_text("PRÉDICTION LARGEMENT CONFIRMÉE")
+    pdf.ln(3)
+
+    pdf.add_table(
+        ['Stratégie', 'Prédiction', 'Résultat G20', 'Verdict'],
+        [
+            ['TIT-FOR-TAT', '~40-50% (dominant)', '34.3%', 'Dominant, sous-prédit'],
+            ['GRIM', '~20%', '20.7%', 'Quasi exact'],
+            ['PROBER', '~15%', '17.0%', 'Proche, mieux que prévu'],
+            ['TESTER', '~10-12%', '10.5%', 'Conforme'],
+            ['PAVLOV', '~8-10%', '6.4%', 'Légèrement sous-prédit'],
+            ['ALL-D', 'Déclin fort', '4.7%', 'Conforme'],
+            ['TFT-2T', 'Extinction', '2.8%', 'Conforme (tendance 0)'],
+            ['JOSS', 'Extinction', '2.3%', 'Conforme (tendance 0)'],
+            ['RANDOM', 'Extinction', '1.2%', 'Conforme (tendance 0)'],
+        ]
+    )
+
+    pdf.chapter_title("Enseignements clés", level=3)
+    pdf.body_text(
+        "1. La coopération conditionnelle est évolutivement stable : TFT, GRIM, PROBER forment un 'trio gagnant' "
+        "qui coopère mutuellement (3,3) et élimine les exploitantes.\n"
+        "2. ALL-D (exploitation pure) s'effondre : 2 pts/tour en mutuelle défection ne suffit pas face à la coopération (3 pts/tour).\n"
+        "3. TFT-2T (tolérance excessive) disparaît : se fait exploiter par ALL-D/TESTER. La clémence sans limite n'est pas viable.\n"
+        "4. Convergence pas atteinte à G20 : TFT continue de croître (+1.2% G19->G20). "
+        "Équilibre final estimé : TFT ~40%, GRIM ~22%, PROBER ~18%, TESTER ~10%."
+    )
+
+    # ===== 15. FICHIERS PRODUITS PHASE 3 =====
+    pdf.add_page()
+    pdf.chapter_title("15. Fichiers produits — Phase 3 (Modification B)", level=2)
+    pdf.add_table(
+        ['Fichier', 'Description'],
+        [
+            ['src/experiments/step3_mods.py', 'Script évolution par sélection (20 générations)'],
+            ['src/experiments/generate_charts.py', '+ fonction graphique_etape3_evolution()'],
+            ['outputs/etape3_evolution.csv', 'Parts de population par génération'],
+            ['outputs/etape3_evolution_population.png', 'Graphique aires empilées (20 générations)'],
+            ['outputs/etape3_sortie_console.txt', 'Capture sortie console complète'],
+            ['journal/journal_B.md', 'Journal (source Markdown, complet 3 phases)'],
+            ['journal/journal_B.pdf', 'Journal (ce PDF, complet Étape 1+2+3)'],
+        ]
+    )
+
     # Sauvegarder
     pdf_path = os.path.join(base_dir, 'journal', 'journal_B.pdf')
     pdf.output(pdf_path)

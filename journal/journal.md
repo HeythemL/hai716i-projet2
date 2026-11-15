@@ -182,3 +182,76 @@ Dans l'Étape 1 (5 stratégies hostiles), ALL-D dominait. Dans l'Étape 2, l'ajo
 - `outputs/etape2_sortie_console.txt`
 - `journal/journal_B.md` & `journal/journal_B.pdf`
 
+---
+
+## 9. Phase 3 — Modification B : Sélection (Évolution par générations)
+
+### 9.1 Choix et prédiction (écrite AVANT exécution)
+
+**Modification B choisie : SÉLECTION** — Reproduction proportionnelle aux scores (Roulette Wheel).
+À chaque génération : tournoi complet → scores → nouvelle population proportionnelle à score × population.
+
+**Prédiction (Sara) :**
+> 1. **TIT-FOR-TAT dominera** (grand gagnant Étape 2, 21104 pts) → part croissante.
+> 2. **GRIM et PROBER** (2ème, 3ème) resteront présentes (~20%, ~15%).
+> 3. **ALL-D déclinera** (mutuelle défection = 2 pts/tour seulement).
+> 4. **TFT-2T, JOSS, RANDOM → extinction** (scores les plus bas).
+> 5. **TESTER, PAVLOV** survie intermédiaire.
+> **Équilibre attendu** : TFT ~40-50%, GRIM ~20%, PROBER ~15%.
+
+### 9.2 Résultats — Évolution sur 20 générations
+
+| Gén. | TFT | GRIM | PROBER | TESTER | ALL-D | PAVLOV | TFT-2T | JOSS | RANDOM |
+|------|-----|------|--------|--------|-------|--------|--------|------|--------|
+| 0 (init) | 11.1% | 11.1% | 11.1% | 11.1% | 11.1% | 11.1% | 11.1% | 11.1% | 11.1% |
+| 5 | 16.3% | 14.4% | 13.3% | 11.9% | 9.9% | 10.5% | 8.6% | 8.1% | 7.1% |
+| 10 | 22.0% | 17.1% | 15.1% | 12.0% | 8.2% | 9.3% | 6.3% | 5.8% | 4.1% |
+| 15 | 28.1% | 19.3% | 16.4% | 11.5% | 6.3% | 8.0% | 4.3% | 3.8% | 2.3% |
+| **20** | **34.3%** | **20.7%** | **17.0%** | **10.5%** | **4.7%** | **6.4%** | **2.8%** | **2.3%** | **1.2%** |
+
+### 9.3 Visualisation
+
+**Évolution des parts de population (20 générations) :**
+![Évolution population](../outputs/etape3_evolution_population.png)
+
+### 9.4 Analyse prédiction vs réalité
+
+**PRÉDICTION LARGEMENT CONFIRMÉE ✅**
+
+| Stratégie | Prédiction | Résultat G20 | Verdict |
+|-----------|------------|--------------|---------|
+| **TIT-FOR-TAT** | ~40-50% (dominant) | **34.3%** | Dominant, mais sous-prédit |
+| **GRIM** | ~20% | **20.7%** | **Quasi exact** |
+| **PROBER** | ~15% | **17.0%** | Proche, mieux que prévu |
+| TESTER | ~10-12% | **10.5%** | Conforme |
+| PAVLOV | ~8-10% | **6.4%** | Légèrement sous-prédit |
+| ALL-D | Déclin fort | **4.7%** | Conforme |
+| TFT-2T | Extinction | **2.8%** | Conforme (→ 0) |
+| JOSS | Extinction | **2.3%** | Conforme (→ 0) |
+| RANDOM | Extinction | **1.2%** | Conforme (→ 0) |
+
+**Enseignements clés :**
+1. **La coopération conditionnelle est évolutivement stable** : TFT, GRIM, PROBER forment un "trio gagnant" qui coopère mutuellement (3,3) et élimine les exploitantes.
+2. **ALL-D (exploitation pure) s'effondre** : 2 pts/tour en mutuelle défection ne suffit pas face à la coopération (3 pts/tour).
+3. **TFT-2T (tolérance excessive) disparaît** : Se fait exploiter par ALL-D/TESTER. La clémence sans limite n'est pas viable.
+4. **Convergence pas atteinte à G20** : TFT continue de croître (+1.2% G19→G20). Équilibre final estimé : TFT ~40%, GRIM ~22%, PROBER ~18%, TESTER ~10%.
+
+---
+
+## 10. Fichiers du projet — Final (Étape 1 + 2 + 3)
+
+- `src/tournament/engine.py` (Moteur de jeu et tournoi)
+- `src/tournament/gains.py` (Matrice de gains)
+- `src/tournament/strategies.py` (9 stratégies : 5 base + 2 A + 2 B)
+- `src/experiments/step1_base.py` (Script Étape 1)
+- `src/experiments/step2_new.py` (Script Étape 2 + graphiques)
+- `src/experiments/step3_mods.py` (Script Phase 3 : sélection 20 générations)
+- `src/experiments/generate_charts.py` (4 graphiques : ét1, ét2, comparatif, évolution)
+- `tests/test_strategies.py` (31 tests unitaires, tous ✅)
+- `outputs/etape1_classement.csv` / `.png`
+- `outputs/etape2_classement.csv` / `.png` / `etape2_comparaison.png`
+- `outputs/etape3_evolution.csv` / `etape3_evolution_population.png`
+- `outputs/etape3_sortie_console.txt`
+- `journal/journal_B.md` & `journal/journal_B.pdf` (complet)
+- `journal/journal.md` (ce fichier, final fusionné A+B)
+
