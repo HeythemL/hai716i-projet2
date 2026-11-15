@@ -8,7 +8,7 @@ from .gains import gain, C, D
 from .strategies import STRATEGIES
 
 
-def jouer_partie(strat_i, strat_j, nb_tours=200, seed=None):
+def jouer_partie(strat_i, strat_j, nb_tours=200, seed=None, bruit=0.0):
     """
     Joue une partie entre deux stratégies.
 
@@ -17,6 +17,7 @@ def jouer_partie(strat_i, strat_j, nb_tours=200, seed=None):
         strat_j: fonction(historique_moi, historique_adv, tour) -> C ou D
         nb_tours: nombre de tours (défaut 200)
         seed: graine aléatoire pour reproductibilité
+        bruit: probabilité de retourner l'action (0.0 = pas de bruit, 0.05 = 5%)
 
     Returns:
         dict avec keys: 'score_i', 'score_j', 'historique'
@@ -37,12 +38,18 @@ def jouer_partie(strat_i, strat_j, nb_tours=200, seed=None):
         action_i = strat_i(actions_i, actions_j, tour)
         action_j = strat_j(actions_j, actions_i, tour)
 
+        # Appliquer le bruit : inverser l'action avec probabilité 'bruit'
+        if bruit > 0 and random.random() < bruit:
+            action_i = D if action_i == C else C
+        if bruit > 0 and random.random() < bruit:
+            action_j = D if action_j == C else C
+
         # Calculer les gains
         g_i, g_j = gain(action_i, action_j)
         score_i += g_i
         score_j += g_j
 
-        # Enregistrer les actions
+        # Enregistrer les actions (actions réelles jouées, après bruit)
         actions_i.append(action_i)
         actions_j.append(action_j)
         historique.append((action_i, action_j))
@@ -54,7 +61,7 @@ def jouer_partie(strat_i, strat_j, nb_tours=200, seed=None):
     }
 
 
-def jouer_tournoi(strategies, nb_parties=5, nb_tours=200, seed=42):
+def jouer_tournoi(strategies, nb_parties=5, nb_tours=200, seed=42, bruit=0.0):
     """
     Tournoi round-robin : chaque stratégie affronte chaque autre.
 
@@ -63,6 +70,7 @@ def jouer_tournoi(strategies, nb_parties=5, nb_tours=200, seed=42):
         nb_parties: nombre de parties par paire (défaut 5)
         nb_tours: tours par partie (défaut 200)
         seed: graine aléatoire
+        bruit: probabilité de retourner l'action (0.0 = pas de bruit, 0.05 = 5%)
 
     Returns:
         dict {nom_strategie: score_total}
@@ -82,7 +90,7 @@ def jouer_tournoi(strategies, nb_parties=5, nb_tours=200, seed=42):
 
             for partie in range(nb_parties):
                 # Seed différent pour chaque partie
-                resultat = jouer_partie(strat_i, strat_j, nb_tours, seed + partie * 1000 + i * 100 + j)
+                resultat = jouer_partie(strat_i, strat_j, nb_tours, seed + partie * 1000 + i * 100 + j, bruit)
 
                 scores_totaux[nom_i] += resultat['score_i']
                 scores_totaux[nom_j] += resultat['score_j']
