@@ -118,6 +118,57 @@ def graphique_etape2_classement(scores):
     plt.close()
 
 
+def graphique_etape3_evolution(historique_pop, strategies_noms):
+    """
+    Graphique de l'évolution des parts de population (aire empilée).
+
+    Args:
+        historique_pop: liste de dict {nom: proportion} par génération
+        strategies_noms: liste des noms de stratégies (ordre pour la légende)
+    """
+    generations = list(range(len(historique_pop)))
+
+    # Couleurs cohérentes avec les autres graphiques
+    color_map = {
+        'ALL-D': '#e74c3c', 'RANDOM': '#95a5a6', 'TIT-FOR-TAT': '#2ecc71',
+        'TESTER': '#f39c12', 'JOSS': '#9b59b6',
+        'GRIM': '#e67e22', 'PAVLOV': '#d35400',
+        'TFT-2T': '#27ae60', 'PROBER': '#1abc9c'
+    }
+    colors = [color_map.get(s, '#95a5a6') for s in strategies_noms]
+
+    # Préparer les données pour stackplot
+    data = []
+    for nom in strategies_noms:
+        data.append([pop[nom] for pop in historique_pop])
+
+    fig, ax = plt.subplots(figsize=(14, 8))
+
+    # Graphique en aires empilées
+    ax.stackplot(generations, data, labels=strategies_noms, colors=colors, alpha=0.85)
+
+    # Ligne pour TFT (gagnant attendu) en pointillés
+    tft_idx = strategies_noms.index('TIT-FOR-TAT') if 'TIT-FOR-TAT' in strategies_noms else -1
+    if tft_idx >= 0:
+        ax.plot(generations, data[tft_idx], 'k--', linewidth=1.5, alpha=0.7, label='_nolegend_')
+
+    ax.set_xlabel('Génération', fontsize=13)
+    ax.set_ylabel('Part de population', fontsize=13)
+    ax.set_title('Étape 3 — Évolution de la population par sélection\n(Reproduction proportionnelle aux scores, 20 générations)',
+                 fontsize=14, fontweight='bold')
+    ax.set_xlim(0, len(historique_pop) - 1)
+    ax.set_ylim(0, 1.02)
+    ax.grid(axis='both', alpha=0.3)
+
+    # Légende à droite
+    ax.legend(loc='center left', bbox_to_anchor=(1.02, 0.5), fontsize=10, ncol=1)
+
+    plt.tight_layout()
+    plt.savefig('outputs/etape3_evolution_population.png', dpi=150, bbox_inches='tight')
+    print("Graphique évolution population sauvegardé : outputs/etape3_evolution_population.png")
+    plt.close()
+
+
 if __name__ == "__main__":
     graphique_etape1()
     # Test avec données factices
@@ -126,4 +177,27 @@ if __name__ == "__main__":
                'GRIM': 20489, 'PAVLOV': 19403, 'TFT-2T': 18630, 'PROBER': 20347}
     graphique_etape2_comparaison(scores1, scores2)
     graphique_etape2_classement(scores2)
+
+    # Test graphique évolution
+    import numpy as np
+    # Simuler évolution : TFT prend le dessus
+    strategies_test = ['ALL-D', 'RANDOM', 'TIT-FOR-TAT', 'TESTER', 'JOSS', 'GRIM', 'PAVLOV', 'TFT-2T', 'PROBER']
+    hist_test = []
+    for g in range(21):
+        pop = {}
+        # TFT croît logistiquement
+        tft_share = 1 / (1 + np.exp(-0.5 * (g - 8)))
+        # Autres décroissent
+        remaining = 1 - tft_share
+        other_share = remaining / 8
+        for s in strategies_test:
+            if s == 'TIT-FOR-TAT':
+                pop[s] = tft_share
+            else:
+                pop[s] = other_share * (0.9 ** g) if g > 0 else 1/9
+        # Renormaliser
+        total = sum(pop.values())
+        pop = {k: v/total for k, v in pop.items()}
+        hist_test.append(pop)
+    graphique_etape3_evolution(hist_test, strategies_test)
 
