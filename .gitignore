@@ -60,13 +60,5 @@ htmlcov/
 # *.png
 # *.pdf
 
-# Markdown files (comme demandé)
+# Markdown files 
 *.md
-
-# Exceptions : garder les fichiers de doc principaux
-!README.md
-!ROADMAP.md
-!TEAM_SPLIT.md
-!journal/journal.md
-!MEMBER_A.md
-!journal/journal_A.md
