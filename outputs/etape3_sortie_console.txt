@@ -1,0 +1,507 @@
+============================================================
+ÉTAPE 3 : MODIFICATION B — SÉLECTION (ÉVOLUTION)
+============================================================
+Seed: 42
+Parties par paire: 5
+Tours par partie: 200
+Générations: 20
+Stratégies: ['ALL-D', 'RANDOM', 'TIT-FOR-TAT', 'TESTER', 'JOSS', 'GRIM', 'PAVLOV', 'TFT-2T', 'PROBER']
+
+Population initiale (uniforme):
+  ALL-D: 0.1111 (11.1%)
+  RANDOM: 0.1111 (11.1%)
+  TIT-FOR-TAT: 0.1111 (11.1%)
+  TESTER: 0.1111 (11.1%)
+  JOSS: 0.1111 (11.1%)
+  GRIM: 0.1111 (11.1%)
+  PAVLOV: 0.1111 (11.1%)
+  TFT-2T: 0.1111 (11.1%)
+  PROBER: 0.1111 (11.1%)
+
+
+==================== GÉNÉRATION 1 ====================
+Scores du tournoi (génération 1):
+  TIT-FOR-TAT: 21125
+  GRIM: 20546
+  PROBER: 20325
+  TESTER: 19816
+  PAVLOV: 19345
+  ALL-D: 19090
+  TFT-2T: 18623
+  JOSS: 18295
+  RANDOM: 17855
+
+Population après sélection (génération 1):
+  TIT-FOR-TAT: 0.1207 (12.1%)
+  GRIM: 0.1174 (11.7%)
+  PROBER: 0.1161 (11.6%)
+  TESTER: 0.1132 (11.3%)
+  PAVLOV: 0.1105 (11.1%)
+  ALL-D: 0.1091 (10.9%)
+  TFT-2T: 0.1064 (10.6%)
+  JOSS: 0.1045 (10.5%)
+  RANDOM: 0.1020 (10.2%)
+
+==================== GÉNÉRATION 2 ====================
+Scores du tournoi (génération 2):
+  TIT-FOR-TAT: 21123
+  GRIM: 20571
+  PROBER: 20311
+  TESTER: 19824
+  PAVLOV: 19379
+  ALL-D: 19123
+  TFT-2T: 18602
+  JOSS: 18300
+  RANDOM: 17863
+
+Population après sélection (génération 2):
+  TIT-FOR-TAT: 0.1307 (13.1%)
+  GRIM: 0.1238 (12.4%)
+  PROBER: 0.1209 (12.1%)
+  TESTER: 0.1150 (11.5%)
+  PAVLOV: 0.1098 (11.0%)
+  ALL-D: 0.1069 (10.7%)
+  TFT-2T: 0.1015 (10.1%)
+  JOSS: 0.0980 (9.8%)
+  RANDOM: 0.0934 (9.3%)
+
+==================== GÉNÉRATION 3 ====================
+Scores du tournoi (génération 3):
+  TIT-FOR-TAT: 21129
+  GRIM: 20576
+  PROBER: 20283
+  TESTER: 19854
+  PAVLOV: 19351
+  ALL-D: 19150
+  TFT-2T: 18568
+  JOSS: 18307
+  RANDOM: 17859
+
+Population après sélection (génération 3):
+  TIT-FOR-TAT: 0.1411 (14.1%)
+  GRIM: 0.1302 (13.0%)
+  PROBER: 0.1253 (12.5%)
+  TESTER: 0.1168 (11.7%)
+  PAVLOV: 0.1086 (10.9%)
+  ALL-D: 0.1047 (10.5%)
+  TFT-2T: 0.0963 (9.6%)
+  JOSS: 0.0918 (9.2%)
+  RANDOM: 0.0853 (8.5%)
+
+==================== GÉNÉRATION 4 ====================
+Scores du tournoi (génération 4):
+  TIT-FOR-TAT: 21112
+  GRIM: 20645
+  PROBER: 20256
+  TESTER: 19846
+  PAVLOV: 19344
+  ALL-D: 19117
+  TFT-2T: 18551
+  JOSS: 18340
+  RANDOM: 17880
+
+Population après sélection (génération 4):
+  TIT-FOR-TAT: 0.1519 (15.2%)
+  GRIM: 0.1370 (13.7%)
+  PROBER: 0.1294 (12.9%)
+  TESTER: 0.1181 (11.8%)
+  PAVLOV: 0.1071 (10.7%)
+  ALL-D: 0.1020 (10.2%)
+  TFT-2T: 0.0911 (9.1%)
+  JOSS: 0.0858 (8.6%)
+  RANDOM: 0.0777 (7.8%)
+
+==================== GÉNÉRATION 5 ====================
+Scores du tournoi (génération 5):
+  TIT-FOR-TAT: 21111
+  GRIM: 20639
+  PROBER: 20289
+  TESTER: 19829
+  PAVLOV: 19329
+  ALL-D: 19105
+  TFT-2T: 18677
+  JOSS: 18547
+  RANDOM: 17917
+
+Population après sélection (génération 5):
+  TIT-FOR-TAT: 0.1627 (16.3%)
+  GRIM: 0.1435 (14.4%)
+  PROBER: 0.1333 (13.3%)
+  TESTER: 0.1189 (11.9%)
+  PAVLOV: 0.1050 (10.5%)
+  ALL-D: 0.0989 (9.9%)
+  TFT-2T: 0.0863 (8.6%)
+  JOSS: 0.0807 (8.1%)
+  RANDOM: 0.0707 (7.1%)
+
+==================== GÉNÉRATION 6 ====================
+Scores du tournoi (génération 6):
+  TIT-FOR-TAT: 21098
+  GRIM: 20590
+  PROBER: 20282
+  TESTER: 19848
+  PAVLOV: 19392
+  ALL-D: 19147
+  TFT-2T: 18663
+  JOSS: 18586
+  RANDOM: 17881
+
+Population après sélection (génération 6):
+  TIT-FOR-TAT: 0.1738 (17.4%)
+  GRIM: 0.1496 (15.0%)
+  PROBER: 0.1368 (13.7%)
+  TESTER: 0.1194 (11.9%)
+  PAVLOV: 0.1031 (10.3%)
+  ALL-D: 0.0958 (9.6%)
+  TFT-2T: 0.0815 (8.2%)
+  JOSS: 0.0760 (7.6%)
+  RANDOM: 0.0640 (6.4%)
+
+==================== GÉNÉRATION 7 ====================
+Scores du tournoi (génération 7):
+  TIT-FOR-TAT: 21100
+  GRIM: 20588
+  PROBER: 20308
+  TESTER: 19841
+  PAVLOV: 19341
+  ALL-D: 19150
+  TFT-2T: 18666
+  JOSS: 18591
+  RANDOM: 17854
+
+Population après sélection (génération 7):
+  TIT-FOR-TAT: 0.1852 (18.5%)
+  GRIM: 0.1555 (15.6%)
+  PROBER: 0.1403 (14.0%)
+  TESTER: 0.1197 (12.0%)
+  PAVLOV: 0.1007 (10.1%)
+  ALL-D: 0.0927 (9.3%)
+  TFT-2T: 0.0769 (7.7%)
+  JOSS: 0.0713 (7.1%)
+  RANDOM: 0.0577 (5.8%)
+
+==================== GÉNÉRATION 8 ====================
+Scores du tournoi (génération 8):
+  TIT-FOR-TAT: 21104
+  GRIM: 20579
+  PROBER: 20382
+  TESTER: 19885
+  PAVLOV: 19394
+  ALL-D: 19096
+  TFT-2T: 18665
+  JOSS: 18628
+  RANDOM: 17836
+
+Population après sélection (génération 8):
+  TIT-FOR-TAT: 0.1968 (19.7%)
+  GRIM: 0.1611 (16.1%)
+  PROBER: 0.1440 (14.4%)
+  TESTER: 0.1198 (12.0%)
+  PAVLOV: 0.0983 (9.8%)
+  ALL-D: 0.0891 (8.9%)
+  TFT-2T: 0.0722 (7.2%)
+  JOSS: 0.0669 (6.7%)
+  RANDOM: 0.0518 (5.2%)
+
+==================== GÉNÉRATION 9 ====================
+Scores du tournoi (génération 9):
+  TIT-FOR-TAT: 21096
+  GRIM: 20548
+  PROBER: 20404
+  TESTER: 19903
+  PAVLOV: 19392
+  ALL-D: 19093
+  TFT-2T: 18648
+  JOSS: 18635
+  RANDOM: 17847
+
+Population après sélection (génération 9):
+  TIT-FOR-TAT: 0.2085 (20.8%)
+  GRIM: 0.1663 (16.6%)
+  PROBER: 0.1476 (14.8%)
+  TESTER: 0.1198 (12.0%)
+  PAVLOV: 0.0958 (9.6%)
+  ALL-D: 0.0855 (8.5%)
+  TFT-2T: 0.0677 (6.8%)
+  JOSS: 0.0626 (6.3%)
+  RANDOM: 0.0464 (4.6%)
+
+==================== GÉNÉRATION 10 ====================
+Scores du tournoi (génération 10):
+  TIT-FOR-TAT: 21067
+  GRIM: 20515
+  PROBER: 20365
+  TESTER: 19913
+  PAVLOV: 19415
+  ALL-D: 19123
+  TFT-2T: 18607
+  JOSS: 18577
+  RANDOM: 17767
+
+Population après sélection (génération 10):
+  TIT-FOR-TAT: 0.2203 (22.0%)
+  GRIM: 0.1711 (17.1%)
+  PROBER: 0.1508 (15.1%)
+  TESTER: 0.1196 (12.0%)
+  PAVLOV: 0.0933 (9.3%)
+  ALL-D: 0.0820 (8.2%)
+  TFT-2T: 0.0631 (6.3%)
+  JOSS: 0.0583 (5.8%)
+  RANDOM: 0.0414 (4.1%)
+
+==================== GÉNÉRATION 11 ====================
+Scores du tournoi (génération 11):
+  TIT-FOR-TAT: 21043
+  GRIM: 20535
+  PROBER: 20393
+  TESTER: 19902
+  PAVLOV: 19391
+  ALL-D: 19072
+  TFT-2T: 18604
+  JOSS: 18525
+  RANDOM: 17797
+
+Population après sélection (génération 11):
+  TIT-FOR-TAT: 0.2322 (23.2%)
+  GRIM: 0.1760 (17.6%)
+  PROBER: 0.1539 (15.4%)
+  TESTER: 0.1192 (11.9%)
+  PAVLOV: 0.0906 (9.1%)
+  ALL-D: 0.0783 (7.8%)
+  TFT-2T: 0.0588 (5.9%)
+  JOSS: 0.0541 (5.4%)
+  RANDOM: 0.0369 (3.7%)
+
+==================== GÉNÉRATION 12 ====================
+Scores du tournoi (génération 12):
+  TIT-FOR-TAT: 21047
+  GRIM: 20535
+  PROBER: 20394
+  TESTER: 19900
+  PAVLOV: 19424
+  ALL-D: 19015
+  TFT-2T: 18614
+  JOSS: 18547
+  RANDOM: 17816
+
+Population après sélection (génération 12):
+  TIT-FOR-TAT: 0.2441 (24.4%)
+  GRIM: 0.1805 (18.1%)
+  PROBER: 0.1569 (15.7%)
+  TESTER: 0.1185 (11.9%)
+  PAVLOV: 0.0879 (8.8%)
+  ALL-D: 0.0744 (7.4%)
+  TFT-2T: 0.0547 (5.5%)
+  JOSS: 0.0501 (5.0%)
+  RANDOM: 0.0328 (3.3%)
+
+==================== GÉNÉRATION 13 ====================
+Scores du tournoi (génération 13):
+  TIT-FOR-TAT: 21018
+  GRIM: 20527
+  PROBER: 20332
+  TESTER: 19869
+  PAVLOV: 19412
+  ALL-D: 19036
+  TFT-2T: 18611
+  JOSS: 18484
+  RANDOM: 17830
+
+Population après sélection (génération 13):
+  TIT-FOR-TAT: 0.2561 (25.6%)
+  GRIM: 0.1850 (18.5%)
+  PROBER: 0.1592 (15.9%)
+  TESTER: 0.1176 (11.8%)
+  PAVLOV: 0.0852 (8.5%)
+  ALL-D: 0.0707 (7.1%)
+  TFT-2T: 0.0508 (5.1%)
+  JOSS: 0.0463 (4.6%)
+  RANDOM: 0.0292 (2.9%)
+
+==================== GÉNÉRATION 14 ====================
+Scores du tournoi (génération 14):
+  TIT-FOR-TAT: 21012
+  GRIM: 20505
+  PROBER: 20348
+  TESTER: 19834
+  PAVLOV: 19433
+  ALL-D: 19045
+  TFT-2T: 18519
+  JOSS: 18254
+  RANDOM: 17771
+
+Population après sélection (génération 14):
+  TIT-FOR-TAT: 0.2684 (26.8%)
+  GRIM: 0.1892 (18.9%)
+  PROBER: 0.1615 (16.2%)
+  TESTER: 0.1163 (11.6%)
+  PAVLOV: 0.0825 (8.3%)
+  ALL-D: 0.0671 (6.7%)
+  TFT-2T: 0.0469 (4.7%)
+  JOSS: 0.0421 (4.2%)
+  RANDOM: 0.0259 (2.6%)
+
+==================== GÉNÉRATION 15 ====================
+Scores du tournoi (génération 15):
+  TIT-FOR-TAT: 21044
+  GRIM: 20504
+  PROBER: 20397
+  TESTER: 19866
+  PAVLOV: 19395
+  ALL-D: 19000
+  TFT-2T: 18563
+  JOSS: 18344
+  RANDOM: 17823
+
+Population après sélection (génération 15):
+  TIT-FOR-TAT: 0.2808 (28.1%)
+  GRIM: 0.1928 (19.3%)
+  PROBER: 0.1638 (16.4%)
+  TESTER: 0.1148 (11.5%)
+  PAVLOV: 0.0796 (8.0%)
+  ALL-D: 0.0634 (6.3%)
+  TFT-2T: 0.0433 (4.3%)
+  JOSS: 0.0384 (3.8%)
+  RANDOM: 0.0229 (2.3%)
+
+==================== GÉNÉRATION 16 ====================
+Scores du tournoi (génération 16):
+  TIT-FOR-TAT: 21065
+  GRIM: 20478
+  PROBER: 20394
+  TESTER: 19859
+  PAVLOV: 19365
+  ALL-D: 19030
+  TFT-2T: 18600
+  JOSS: 18347
+  RANDOM: 17806
+
+Population après sélection (génération 16):
+  TIT-FOR-TAT: 0.2935 (29.4%)
+  GRIM: 0.1959 (19.6%)
+  PROBER: 0.1658 (16.6%)
+  TESTER: 0.1132 (11.3%)
+  PAVLOV: 0.0765 (7.6%)
+  ALL-D: 0.0599 (6.0%)
+  TFT-2T: 0.0400 (4.0%)
+  JOSS: 0.0350 (3.5%)
+  RANDOM: 0.0203 (2.0%)
+
+==================== GÉNÉRATION 17 ====================
+Scores du tournoi (génération 17):
+  TIT-FOR-TAT: 21036
+  GRIM: 20514
+  PROBER: 20374
+  TESTER: 19859
+  PAVLOV: 19360
+  ALL-D: 19054
+  TFT-2T: 18483
+  JOSS: 18134
+  RANDOM: 17747
+
+Population après sélection (génération 17):
+  TIT-FOR-TAT: 0.3061 (30.6%)
+  GRIM: 0.1992 (19.9%)
+  PROBER: 0.1674 (16.7%)
+  TESTER: 0.1114 (11.1%)
+  PAVLOV: 0.0734 (7.3%)
+  ALL-D: 0.0565 (5.7%)
+  TFT-2T: 0.0366 (3.7%)
+  JOSS: 0.0314 (3.1%)
+  RANDOM: 0.0178 (1.8%)
+
+==================== GÉNÉRATION 18 ====================
+Scores du tournoi (génération 18):
+  TIT-FOR-TAT: 21044
+  GRIM: 20534
+  PROBER: 20409
+  TESTER: 19870
+  PAVLOV: 19359
+  ALL-D: 19099
+  TFT-2T: 18492
+  JOSS: 18132
+  RANDOM: 17693
+
+Population après sélection (génération 18):
+  TIT-FOR-TAT: 0.3184 (31.8%)
+  GRIM: 0.2023 (20.2%)
+  PROBER: 0.1689 (16.9%)
+  TESTER: 0.1094 (10.9%)
+  PAVLOV: 0.0703 (7.0%)
+  ALL-D: 0.0534 (5.3%)
+  TFT-2T: 0.0335 (3.3%)
+  JOSS: 0.0282 (2.8%)
+  RANDOM: 0.0156 (1.6%)
+
+==================== GÉNÉRATION 19 ====================
+Scores du tournoi (génération 19):
+  TIT-FOR-TAT: 21041
+  GRIM: 20530
+  PROBER: 20381
+  TESTER: 19900
+  PAVLOV: 19375
+  ALL-D: 19102
+  TFT-2T: 18614
+  JOSS: 18281
+  RANDOM: 17715
+
+Population après sélection (génération 19):
+  TIT-FOR-TAT: 0.3306 (33.1%)
+  GRIM: 0.2049 (20.5%)
+  PROBER: 0.1699 (17.0%)
+  TESTER: 0.1074 (10.7%)
+  PAVLOV: 0.0672 (6.7%)
+  ALL-D: 0.0503 (5.0%)
+  TFT-2T: 0.0308 (3.1%)
+  JOSS: 0.0254 (2.5%)
+  RANDOM: 0.0136 (1.4%)
+
+==================== GÉNÉRATION 20 ====================
+Scores du tournoi (génération 20):
+  TIT-FOR-TAT: 21036
+  GRIM: 20532
+  PROBER: 20342
+  TESTER: 19904
+  PAVLOV: 19409
+  ALL-D: 19120
+  TFT-2T: 18548
+  JOSS: 18153
+  RANDOM: 17688
+
+Population après sélection (génération 20):
+  TIT-FOR-TAT: 0.3427 (34.3%)
+  GRIM: 0.2073 (20.7%)
+  PROBER: 0.1703 (17.0%)
+  TESTER: 0.1054 (10.5%)
+  PAVLOV: 0.0642 (6.4%)
+  ALL-D: 0.0474 (4.7%)
+  TFT-2T: 0.0281 (2.8%)
+  JOSS: 0.0227 (2.3%)
+  RANDOM: 0.0119 (1.2%)
+
+============================================================
+RÉSUMÉ FINAL — ÉVOLUTION SUR 20 GÉNÉRATIONS
+============================================================
+Gén.  ALL-D       RANDOM      TIT-FOR-TAT TESTER      JOSS        GRIM        PAVLOV      TFT-2T      PROBER      
+------------------------------------------------------------------------------------------------------------------
+0     0.1111      0.1111      0.1111      0.1111      0.1111      0.1111      0.1111      0.1111      0.1111      
+1     0.1091      0.1020      0.1207      0.1132      0.1045      0.1174      0.1105      0.1064      0.1161      
+2     0.1069      0.0934      0.1307      0.1150      0.0980      0.1238      0.1098      0.1015      0.1209      
+3     0.1047      0.0853      0.1411      0.1168      0.0918      0.1302      0.1086      0.0963      0.1253      
+4     0.1020      0.0777      0.1519      0.1181      0.0858      0.1370      0.1071      0.0911      0.1294      
+5     0.0989      0.0707      0.1627      0.1189      0.0807      0.1435      0.1050      0.0863      0.1333      
+6     0.0958      0.0640      0.1738      0.1194      0.0760      0.1496      0.1031      0.0815      0.1368      
+7     0.0927      0.0577      0.1852      0.1197      0.0713      0.1555      0.1007      0.0769      0.1403      
+8     0.0891      0.0518      0.1968      0.1198      0.0669      0.1611      0.0983      0.0722      0.1440      
+9     0.0855      0.0464      0.2085      0.1198      0.0626      0.1663      0.0958      0.0677      0.1476      
+10    0.0820      0.0414      0.2203      0.1196      0.0583      0.1711      0.0933      0.0631      0.1508      
+11    0.0783      0.0369      0.2322      0.1192      0.0541      0.1760      0.0906      0.0588      0.1539      
+12    0.0744      0.0328      0.2441      0.1185      0.0501      0.1805      0.0879      0.0547      0.1569      
+13    0.0707      0.0292      0.2561      0.1176      0.0463      0.1850      0.0852      0.0508      0.1592      
+14    0.0671      0.0259      0.2684      0.1163      0.0421      0.1892      0.0825      0.0469      0.1615      
+15    0.0634      0.0229      0.2808      0.1148      0.0384      0.1928      0.0796      0.0433      0.1638      
+16    0.0599      0.0203      0.2935      0.1132      0.0350      0.1959      0.0765      0.0400      0.1658      
+17    0.0565      0.0178      0.3061      0.1114      0.0314      0.1992      0.0734      0.0366      0.1674      
+18    0.0534      0.0156      0.3184      0.1094      0.0282      0.2023      0.0703      0.0335      0.1689      
+19    0.0503      0.0136      0.3306      0.1074      0.0254      0.2049      0.0672      0.0308      0.1699      
+20    0.0474      0.0119      0.3427      0.1054      0.0227      0.2073      0.0642      0.0281      0.1703      
